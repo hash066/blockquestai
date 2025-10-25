@@ -42,7 +42,7 @@ User Interface → Registrar Nodes (7) → Tendermint BFT Consensus → Merkle B
 3. **Formal chain-of-custody documentation** for legal admissibility  
 4. **Economic security model** with game-theoretically proven attack resistance
 
-📄 [Complete Architecture Documentation](docs/architecture.md)
+
 
 ---
 
@@ -235,23 +235,15 @@ cd ../frontend && npm run dev
 - 🔍 **Prometheus Metrics:** http://localhost:9090
 - 🗄️ **MinIO Console:** http://localhost:9001 (minioadmin/minioadmin123)
 
-📖 [Detailed Installation Guide](docs/installation.md)
+
 
 ---
 
 ## 🎬 Demo Materials
 
-### Video Walkthrough (7 Minutes)
+### Video Walkthrough (3 Minutes)
 
 **[Watch Complete Demo](https://youtu.be/YOUR_VIDEO_ID)**
-
-**Timestamps:**
-- 0:00-1:30 – Frontend user journey (wallet connection, commit submission)
-- 1:30-3:00 – Backend infrastructure tour (Docker containers, Tendermint consensus)
-- 3:00-4:30 – Real-time monitoring (Grafana dashboards, Prometheus alerts)
-- 4:30-5:30 – Database operations (PostgreSQL queries, merkle batch inspection)
-- 5:30-6:30 – Blockchain verification (Sepolia Etherscan, IPFS gateway)
-- 6:30-7:00 – Evidence package generation and legal use cases
 
 ### Live Examples
 
@@ -284,7 +276,7 @@ cd ../frontend && npm run dev
 | **System Uptime** | 99.8% | Includes planned maintenance |
 | **Test Coverage** | 87% | Unit + integration + security tests |
 
-📊 [Detailed Performance Report (Excel)](data/reports/performance-analysis.xlsx)
+
 
 ### Scalability Projections
 
@@ -295,7 +287,6 @@ cd ../frontend && npm run dev
 | **Production (Med)** | 2,000 | 31 registrars | $8,000 |
 | **Production (High)** | 10,000 | 63 registrars | $35,000 |
 
-📖 [Scalability Analysis](docs/scalability.md)
 
 ---
 
@@ -502,7 +493,7 @@ THEOREM LivenessProperty ==
         (ValidatorQuorum(c) >= 2f+1) ~> (c \in anchoredCommits)
 ```
 
-📖 [Complete Security Audit Report](docs/security-audit.md)
+
 
 ---
 
@@ -534,7 +525,7 @@ THEOREM LivenessProperty ==
 - Third-party audit certifications (CertiK, OpenZeppelin)
 - International legal framework compliance (EU AI Act, etc.)
 
-📖 [Detailed Roadmap with Milestones](docs/roadmap.md)
+
 
 ---
 
@@ -556,13 +547,7 @@ We welcome community contributions! Please review our guidelines before submitti
 4. Push to branch (`git push origin feature/amazing-feature`)
 5. Open Pull Request with detailed description
 
-📖 [Contributing Guidelines](CONTRIBUTING.md)
 
-**Community Channels:**
-- 💬 [Discord Server](https://discord.gg/blockquest)
-- 📱 [Telegram Group](https://t.me/blockquest)
-- 🐦 [Twitter Updates](https://twitter.com/blockquest)
-- 📧 [Mailing List](https://blockquest.io/newsletter)
 
 ---
 
@@ -595,7 +580,6 @@ This project is licensed under the **MIT License** - see [LICENSE](LICENSE) file
 **Legal Defensibility:**
 - Court-admissible evidence packages (PDF + JSON)
 - Formal chain-of-custody documentation
-- GDPR/CCPA compliance by design
 - Jurisdiction-aware metadata handling
 
 **Economic Security:**
@@ -647,10 +631,7 @@ This project is licensed under the **MIT License** - see [LICENSE](LICENSE) file
 ## 🔗 Quick Links
 
 **Live Deployment:**
-- 🌐 Frontend: https://blockquest.vercel.app (deployed)
-- 🔗 API: https://blockquest-api.railway.app (production)
-- 📊 Metrics: https://blockquest-grafana.railway.app (monitoring)
-
+- 🌐: http://13.233.148.80:3000/
 **Blockchain:**
 - 📜 AnchorContract: [Sepolia Etherscan](https://sepolia.etherscan.io/address/0xYourContractAddress)
 - 📜 StakingContract: [Sepolia Etherscan](https://sepolia.etherscan.io/address/0xYourStakingAddress)
@@ -662,9 +643,8 @@ This project is licensed under the **MIT License** - see [LICENSE](LICENSE) file
 - 📦 Web3.Storage: https://web3.storage
 
 **Development:**
-- 💻 GitHub Repository: https://github.com/YOUR_USERNAME/blockquest
-- 📖 Documentation Site: https://docs.blockquest.io
-- 🐛 Demo Video: 
+- 💻 GitHub Repository: https://github.com/hash066/blockquestai
+- 🐛 Demo Video: https://drive.google.com/file/d/1VqpoDASnpIprVDlH9mws9MCMyCHC7A9w/view?usp=sharing
 
 
 **🚀 Built for the future of AI ownership verification 🚀**
