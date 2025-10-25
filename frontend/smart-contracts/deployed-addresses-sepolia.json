@@ -1,0 +1,6 @@
+{
+  "CommitRegistry": "0x1234567890123456789012345678901234567890",
+  "ModelRegistry": "0x0987654321098765432109876543210987654321",
+  "StakingContract": "0xabcdefabcdefabcdefabcdefabcdefabcdefabcd",
+  "AnchorContract": "0xfedcba9876543210fedcba9876543210fedcba98"
+}
