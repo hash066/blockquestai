@@ -46,7 +46,7 @@ User Interface → Registrar Nodes (7) → Tendermint BFT Consensus → Merkle B
 
 ---
 
-## ✨ Core Features
+## ✨ Core Features[documentation for each available under blockquest-> docs]
 
 ### 🔐 1. Commit-Reveal Protocol
 ```solidity
@@ -64,7 +64,7 @@ function verifyReveal(string prompt, bytes32 nonce, bytes32 fingerprint)
 - Non-repudiation through DID signatures
 - Selective disclosure (reveal only when needed)
 
-📖 [Cryptographic Security Analysis](docs/commitment-security.md)
+
 
 ---
 
@@ -82,7 +82,6 @@ Integrated from [PurrProof/merkle-proof-vis](https://github.com/PurrProof/merkle
 - Parallel proof generation
 - Client-side verification
 
-📖 [Gas Optimization Strategy](docs/gas-optimization.md)
 
 ---
 
@@ -99,8 +98,6 @@ Auto-generated compliance documents include:
 
 **Export Formats:** PDF (court-ready) • JSON (machine-readable) • CSV (bulk analysis)
 
-📄 [Sample Evidence Package](data/evidence/sample_evidence.pdf)  
-📖 [Legal Framework Documentation](docs/chain-of-custody.md)
 
 ---
 
@@ -128,7 +125,7 @@ modelFingerprint = H(
 - Slashing for fraudulent fingerprints
 - Immutable provenance chain
 
-📖 [Model Registry Implementation Guide](docs/model-lineage.md)
+
 
 ---
 
@@ -156,7 +153,7 @@ EV(attack) = P(success) × Reward - P(detection) × Slash - OpportunityCoast
           = -$9,390 (negative EV for rational actors)
 ```
 
-📖 [Complete Economic Security Model](docs/economic-security.md)
+
 
 ---
 
@@ -182,7 +179,7 @@ EV(attack) = P(success) × Reward - P(detection) × Slash - OpportunityCoast
 - Progressive stake requirements
 - CAPTCHA integration for low-stake DIDs
 
-📖 [Comprehensive Threat Model](docs/threat-model.md)
+
 
 ---
 
@@ -633,9 +630,9 @@ This project is licensed under the **MIT License** - see [LICENSE](LICENSE) file
 **Live Deployment:**
 - 🌐: http://13.233.148.80:3000/
 **Blockchain:**
-- 📜 AnchorContract: [Sepolia Etherscan](https://sepolia.etherscan.io/address/0xYourContractAddress)
-- 📜 StakingContract: [Sepolia Etherscan](https://sepolia.etherscan.io/address/0xYourStakingAddress)
-- 📜 ModelRegistry: [Sepolia Etherscan](https://sepolia.etherscan.io/address/0xYourRegistryAddress)
+- 📜 AnchorContract: [Sepolia Etherscan](https://sepolia.etherscan.io/address/0x9A676e781A523b5d0C0e43731313A708CB607508)
+- 📜 StakingContract: [Sepolia Etherscan](https://sepolia.etherscan.io/address/0x9A676e781A523b5d0C0e43731313A708CB607508)
+- 📜 ModelRegistry: [Sepolia Etherscan](https://sepolia.etherscan.io/address/0x9A676e781A523b5d0C0e43731313A708CB607508)
 
 **Storage:**
 - 🗄️ IPFS Gateway: https://gateway.pinata.cloud/ipfs/
