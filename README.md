@@ -243,7 +243,7 @@ cd ../frontend && npm run dev
 
 ### Video Walkthrough (3 Minutes)
 
-**[Watch Complete Demo](https://youtu.be/YOUR_VIDEO_ID)**
+**[Watch Complete Demo]([](https://drive.google.com/file/d/1VqpoDASnpIprVDlH9mws9MCMyCHC7A9w/view?usp=sharing))**
 
 ### Live Examples
 
