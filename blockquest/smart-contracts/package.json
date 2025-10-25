@@ -1,0 +1,26 @@
+{
+  "name": "proof-of-prompt-contracts",
+  "version": "1.0.0",
+  "description": "Smart contracts for Proof of Prompt blockchain",
+  "scripts": {
+    "compile": "hardhat compile",
+    "test": "hardhat test",
+    "node": "hardhat node",
+    "deploy:local": "hardhat run scripts/deploy-all.js --network localhost",
+    "deploy:sepolia": "hardhat run scripts/deploy-all.js --network sepolia",
+    "verify:sepolia": "hardhat run scripts/verify-all.js --network sepolia",
+    "fund:local": "hardhat run scripts/fund-accounts.js --network localhost",
+    "deploy": "hardhat run scripts/deploy-mock-token.js --network localhost",
+    "fund": "hardhat run scripts/fund-accounts.js --network localhost",
+    "test-flow": "cd ../scripts && node test-merkle-flow.js"
+  },
+  "devDependencies": {
+    "@nomicfoundation/hardhat-toolbox": "^4.0.0",
+    "@openzeppelin/contracts": "^5.4.0",
+    "hardhat": "^2.19.0",
+    "dotenv": "^16.3.1"
+  },
+  "dependencies": {
+    "ethers": "^6.9.0"
+  }
+}

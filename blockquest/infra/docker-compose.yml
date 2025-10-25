@@ -1,0 +1,683 @@
+networks:
+  proof-of-prompt:
+    driver: bridge
+
+volumes:
+  postgres-data-1:
+  postgres-data-2:
+  postgres-data-3:
+  postgres-data-4:
+  postgres-data-5:
+  postgres-data-6:
+  postgres-data-7:
+  ipfs-data-1:
+  ipfs-data-2:
+  ipfs-data-3:
+  minio-data:
+  prometheus-data:
+  grafana-data:
+
+services:
+  # ==================== HARDHAT LOCAL BLOCKCHAIN ====================
+  hardhat:
+    image: node:20-alpine
+    container_name: hardhat
+    working_dir: /app
+    command: sh -c "npm install && npx hardhat node"
+    volumes:
+      - ../smart-contracts:/app
+    ports:
+      - "8545:8545"
+    networks:
+      - proof-of-prompt
+    environment:
+      - CHAIN_ID=1337
+    restart: unless-stopped
+
+  # ==================== MINIO (S3-Compatible Storage) ====================
+  minio:
+    image: minio/minio:latest
+    container_name: minio
+    command: server /data --console-address ":9001"
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    volumes:
+      - minio-data:/data
+    networks:
+      - proof-of-prompt
+    environment:
+      MINIO_ROOT_USER: minioadmin
+      MINIO_ROOT_PASSWORD: minioadmin123
+    restart: unless-stopped
+
+  # ==================== IPFS NODES ====================
+  ipfs-1:
+    image: ipfs/kubo:latest
+    container_name: ipfs-1
+    ports:
+      - "5001:5001"
+      - "8080:8080"
+    volumes:
+      - ipfs-data-1:/data/ipfs
+    networks:
+      - proof-of-prompt
+    environment:
+      - IPFS_PROFILE=server
+    restart: unless-stopped
+
+  ipfs-2:
+    image: ipfs/kubo:latest
+    container_name: ipfs-2
+    ports:
+      - "5002:5001"
+      - "8081:8080"
+    volumes:
+      - ipfs-data-2:/data/ipfs
+    networks:
+      - proof-of-prompt
+    environment:
+      - IPFS_PROFILE=server
+    restart: unless-stopped
+
+  ipfs-3:
+    image: ipfs/kubo:latest
+    container_name: ipfs-3
+    ports:
+      - "5003:5001"
+      - "8082:8080"
+    volumes:
+      - ipfs-data-3:/data/ipfs
+    networks:
+      - proof-of-prompt
+    environment:
+      - IPFS_PROFILE=server
+    restart: unless-stopped
+
+  # ==================== IPFS CLUSTER NODES ====================
+  ipfs-cluster-1:
+    image: ipfs/ipfs-cluster:latest
+    container_name: ipfs-cluster-1
+    depends_on:
+      - ipfs-1
+    ports:
+      - "9094:9094"
+      - "9096:9096"
+    volumes:
+      - ./cluster-config-1:/data/ipfs-cluster
+    networks:
+      - proof-of-prompt
+    environment:
+      CLUSTER_IPFSHTTP_NODEMULTIADDRESS: /dns4/ipfs-1/tcp/5001
+      CLUSTER_RESTAPI_HTTPLISTENMULTIADDRESS: /ip4/0.0.0.0/tcp/9094
+      CLUSTER_CONSENSUS: crdt
+    restart: unless-stopped
+
+  ipfs-cluster-2:
+    image: ipfs/ipfs-cluster:latest
+    container_name: ipfs-cluster-2
+    depends_on:
+      - ipfs-2
+    ports:
+      - "9095:9094"
+      - "9097:9096"
+    volumes:
+      - ./cluster-config-2:/data/ipfs-cluster
+    networks:
+      - proof-of-prompt
+    environment:
+      CLUSTER_IPFSHTTP_NODEMULTIADDRESS: /dns4/ipfs-2/tcp/5001
+      CLUSTER_RESTAPI_HTTPLISTENMULTIADDRESS: /ip4/0.0.0.0/tcp/9094
+      CLUSTER_CONSENSUS: crdt
+    restart: unless-stopped
+
+  ipfs-cluster-3:
+    image: ipfs/ipfs-cluster:latest
+    container_name: ipfs-cluster-3
+    depends_on:
+      - ipfs-3
+    ports:
+      - "9098:9094"
+      - "9099:9096"
+    volumes:
+      - ./cluster-config-3:/data/ipfs-cluster
+    networks:
+      - proof-of-prompt
+    environment:
+      CLUSTER_IPFSHTTP_NODEMULTIADDRESS: /dns4/ipfs-3/tcp/5001
+      CLUSTER_RESTAPI_HTTPLISTENMULTIADDRESS: /ip4/0.0.0.0/tcp/9094
+      CLUSTER_CONSENSUS: crdt
+    restart: unless-stopped
+
+  # ==================== POSTGRES DATABASES ====================
+  postgres-1:
+    image: postgres:15-alpine
+    container_name: postgres-registrar-1
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres-data-1:/var/lib/postgresql/data
+    networks:
+      - proof-of-prompt
+    environment:
+      POSTGRES_DB: registrar
+      POSTGRES_USER: registrar
+      POSTGRES_PASSWORD: registrar123
+    restart: unless-stopped
+
+  postgres-2:
+    image: postgres:15-alpine
+    container_name: postgres-registrar-2
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres-data-2:/var/lib/postgresql/data
+    networks:
+      - proof-of-prompt
+    environment:
+      POSTGRES_DB: registrar
+      POSTGRES_USER: registrar
+      POSTGRES_PASSWORD: registrar123
+    restart: unless-stopped
+
+  postgres-3:
+    image: postgres:15-alpine
+    container_name: postgres-registrar-3
+    ports:
+      - "5434:5432"
+    volumes:
+      - postgres-data-3:/var/lib/postgresql/data
+    networks:
+      - proof-of-prompt
+    environment:
+      POSTGRES_DB: registrar
+      POSTGRES_USER: registrar
+      POSTGRES_PASSWORD: registrar123
+    restart: unless-stopped
+
+  postgres-4:
+    image: postgres:15-alpine
+    container_name: postgres-registrar-4
+    ports:
+      - "5435:5432"
+    volumes:
+      - postgres-data-4:/var/lib/postgresql/data
+    networks:
+      - proof-of-prompt
+    environment:
+      POSTGRES_DB: registrar
+      POSTGRES_USER: registrar
+      POSTGRES_PASSWORD: registrar123
+    restart: unless-stopped
+
+  postgres-5:
+    image: postgres:15-alpine
+    container_name: postgres-registrar-5
+    ports:
+      - "5436:5432"
+    volumes:
+      - postgres-data-5:/var/lib/postgresql/data
+    networks:
+      - proof-of-prompt
+    environment:
+      POSTGRES_DB: registrar
+      POSTGRES_USER: registrar
+      POSTGRES_PASSWORD: registrar123
+    restart: unless-stopped
+
+  postgres-6:
+    image: postgres:15-alpine
+    container_name: postgres-registrar-6
+    ports:
+      - "5437:5432"
+    volumes:
+      - postgres-data-6:/var/lib/postgresql/data
+    networks:
+      - proof-of-prompt
+    environment:
+      POSTGRES_DB: registrar
+      POSTGRES_USER: registrar
+      POSTGRES_PASSWORD: registrar123
+    restart: unless-stopped
+
+  postgres-7:
+    image: postgres:15-alpine
+    container_name: postgres-registrar-7
+    ports:
+      - "5438:5432"
+    volumes:
+      - postgres-data-7:/var/lib/postgresql/data
+    networks:
+      - proof-of-prompt
+    environment:
+      POSTGRES_DB: registrar
+      POSTGRES_USER: registrar
+      POSTGRES_PASSWORD: registrar123
+    restart: unless-stopped
+
+  # ==================== TENDERMINT CONSENSUS NODES ====================
+  tendermint-1:
+    image: tendermint/tendermint:v0.34.24
+    container_name: tendermint-1
+    ports:
+      - "26656:26656"
+      - "26657:26657"
+    volumes:
+      - ./tendermint-data/node1:/tendermint
+    networks:
+      - proof-of-prompt
+    command: node --proxy_app=kvstore
+    restart: unless-stopped
+    depends_on:
+      - postgres-1
+
+  tendermint-2:
+    image: tendermint/tendermint:v0.34.24
+    container_name: tendermint-2
+    ports:
+      - "26659:26656"
+      - "26660:26657"
+    volumes:
+      - ./tendermint-data/node2:/tendermint
+    networks:
+      - proof-of-prompt
+    command: node --proxy_app=kvstore
+    restart: unless-stopped
+    depends_on:
+      - postgres-2
+
+  tendermint-3:
+    image: tendermint/tendermint:v0.34.24
+    container_name: tendermint-3
+    ports:
+      - "26661:26656"
+      - "26662:26657"
+    volumes:
+      - ./tendermint-data/node3:/tendermint
+    networks:
+      - proof-of-prompt
+    command: node --proxy_app=kvstore
+    restart: unless-stopped
+    depends_on:
+      - postgres-3
+
+  tendermint-4:
+    image: tendermint/tendermint:v0.34.24
+    container_name: tendermint-4
+    ports:
+      - "26663:26656"
+      - "26664:26657"
+    volumes:
+      - ./tendermint-data/node4:/tendermint
+    networks:
+      - proof-of-prompt
+    command: node --proxy_app=kvstore
+    restart: unless-stopped
+    depends_on:
+      - postgres-4
+
+  tendermint-5:
+    image: tendermint/tendermint:v0.34.24
+    container_name: tendermint-5
+    ports:
+      - "26665:26656"
+      - "26666:26657"
+    volumes:
+      - ./tendermint-data/node5:/tendermint
+    networks:
+      - proof-of-prompt
+    command: node --proxy_app=kvstore
+    restart: unless-stopped
+    depends_on:
+      - postgres-5
+
+  tendermint-6:
+    image: tendermint/tendermint:v0.34.24
+    container_name: tendermint-6
+    ports:
+      - "26667:26656"
+      - "26668:26657"
+    volumes:
+      - ./tendermint-data/node6:/tendermint
+    networks:
+      - proof-of-prompt
+    command: node --proxy_app=kvstore
+    restart: unless-stopped
+    depends_on:
+      - postgres-6
+
+  tendermint-7:
+    image: tendermint/tendermint:v0.34.24
+    container_name: tendermint-7
+    ports:
+      - "26669:26656"
+      - "26670:26657"
+    volumes:
+      - ./tendermint-data/node7:/tendermint
+    networks:
+      - proof-of-prompt
+    command: node --proxy_app=kvstore
+    restart: unless-stopped
+    depends_on:
+      - postgres-7
+
+  # ==================== REGISTRAR API SERVICES (THE MISSING PIECE!) ====================
+  registrar-api-1:
+    build:
+      context: ../registrar
+      dockerfile: Dockerfile
+    container_name: registrar-api-1
+    ports:
+      - "7001:7001"
+    environment:
+      - NODE_ID=1
+      - PORT=7001
+      - DATABASE_URL=postgresql://registrar:registrar123@postgres-registrar-1:5432/registrar
+      - IPFS_API=http://ipfs-1:5001
+      - MINIO_ENDPOINT=minio:9000
+      - MINIO_ACCESS_KEY=minioadmin
+      - MINIO_SECRET_KEY=minioadmin123
+    networks:
+      - proof-of-prompt
+    depends_on:
+      - postgres-1
+      - ipfs-1
+      - tendermint-1
+    restart: unless-stopped
+
+  registrar-api-2:
+    build:
+      context: ../registrar
+      dockerfile: Dockerfile
+    container_name: registrar-api-2
+    ports:
+      - "7002:7001"
+    environment:
+      - NODE_ID=2
+      - PORT=7001
+      - POSTGRES_HOST=postgres-registrar-2
+      - POSTGRES_DB=registrar
+      - POSTGRES_USER=registrar
+      - POSTGRES_PASSWORD=registrar123
+      - IPFS_API=http://ipfs-2:5001
+      - MINIO_ENDPOINT=minio:9000
+      - MINIO_ACCESS_KEY=minioadmin
+      - MINIO_SECRET_KEY=minioadmin123
+    networks:
+      - proof-of-prompt
+    depends_on:
+      - postgres-2
+      - ipfs-2
+      - tendermint-2
+    restart: unless-stopped
+
+  registrar-api-3:
+    build:
+      context: ../registrar
+      dockerfile: Dockerfile
+    container_name: registrar-api-3
+    ports:
+      - "7003:7001"
+    environment:
+      - NODE_ID=3
+      - PORT=7001
+      - POSTGRES_HOST=postgres-registrar-3
+      - POSTGRES_DB=registrar
+      - POSTGRES_USER=registrar
+      - POSTGRES_PASSWORD=registrar123
+      - IPFS_API=http://ipfs-3:5001
+      - MINIO_ENDPOINT=minio:9000
+      - MINIO_ACCESS_KEY=minioadmin
+      - MINIO_SECRET_KEY=minioadmin123
+    networks:
+      - proof-of-prompt
+    depends_on:
+      - postgres-3
+      - ipfs-3
+      - tendermint-3
+    restart: unless-stopped
+
+  registrar-api-4:
+    build:
+      context: ../registrar
+      dockerfile: Dockerfile
+    container_name: registrar-api-4
+    ports:
+      - "7004:7001"
+    environment:
+      - NODE_ID=4
+      - PORT=7001
+      - POSTGRES_HOST=postgres-registrar-4
+      - POSTGRES_DB=registrar
+      - POSTGRES_USER=registrar
+      - POSTGRES_PASSWORD=registrar123
+      - IPFS_API=http://ipfs-1:5001
+      - MINIO_ENDPOINT=minio:9000
+      - MINIO_ACCESS_KEY=minioadmin
+      - MINIO_SECRET_KEY=minioadmin123
+    networks:
+      - proof-of-prompt
+    depends_on:
+      - postgres-4
+      - tendermint-4
+    restart: unless-stopped
+
+  registrar-api-5:
+    build:
+      context: ../registrar
+      dockerfile: Dockerfile
+    container_name: registrar-api-5
+    ports:
+      - "7005:7001"
+    environment:
+      - NODE_ID=5
+      - PORT=7001
+      - POSTGRES_HOST=postgres-registrar-5
+      - POSTGRES_DB=registrar
+      - POSTGRES_USER=registrar
+      - POSTGRES_PASSWORD=registrar123
+      - IPFS_API=http://ipfs-2:5001
+      - MINIO_ENDPOINT=minio:9000
+      - MINIO_ACCESS_KEY=minioadmin
+      - MINIO_SECRET_KEY=minioadmin123
+    networks:
+      - proof-of-prompt
+    depends_on:
+      - postgres-5
+      - tendermint-5
+    restart: unless-stopped
+
+  registrar-api-6:
+    build:
+      context: ../registrar
+      dockerfile: Dockerfile
+    container_name: registrar-api-6
+    ports:
+      - "7006:7001"
+    environment:
+      - NODE_ID=6
+      - PORT=7001
+      - POSTGRES_HOST=postgres-registrar-6
+      - POSTGRES_DB=registrar
+      - POSTGRES_USER=registrar
+      - POSTGRES_PASSWORD=registrar123
+      - IPFS_API=http://ipfs-3:5001
+      - MINIO_ENDPOINT=minio:9000
+      - MINIO_ACCESS_KEY=minioadmin
+      - MINIO_SECRET_KEY=minioadmin123
+    networks:
+      - proof-of-prompt
+    depends_on:
+      - postgres-6
+      - tendermint-6
+    restart: unless-stopped
+
+  registrar-api-7:
+    build:
+      context: ../registrar
+      dockerfile: Dockerfile
+    container_name: registrar-api-7
+    ports:
+      - "7007:7001"
+    environment:
+      - NODE_ID=7
+      - PORT=7001
+      - POSTGRES_HOST=postgres-registrar-7
+      - POSTGRES_DB=registrar
+      - POSTGRES_USER=registrar
+      - POSTGRES_PASSWORD=registrar123
+      - IPFS_API=http://ipfs-1:5001
+      - MINIO_ENDPOINT=minio:9000
+      - MINIO_ACCESS_KEY=minioadmin
+      - MINIO_SECRET_KEY=minioadmin123
+    networks:
+      - proof-of-prompt
+    depends_on:
+      - postgres-7
+      - tendermint-7
+    restart: unless-stopped
+
+  # ==================== MERKLE BATCHER SERVICES ====================
+  merkle-batcher-1:
+    build:
+      context: ../services/merkle-batcher
+      dockerfile: Dockerfile
+    container_name: merkle-batcher-1
+    depends_on:
+      - postgres-1
+      - ipfs-1
+      - minio
+    ports:
+      - "9001:9001"
+    networks:
+      - proof-of-prompt
+    environment:
+      - NODE_ID=1
+      - PORT=9001
+      - BATCH_SIZE=10
+      - BATCH_INTERVAL=30000
+      - DATABASE_URL=postgresql://registrar:registrar123@postgres-registrar-1:5432/registrar
+      - MINIO_ENDPOINT=minio
+      - MINIO_ROOT_USER=minioadmin
+      - MINIO_ROOT_PASSWORD=minioadmin123
+      - IPFS_HOST=ipfs-1
+      - IPFS_PORT=5001
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 512M
+
+  # ==================== SEQUENCER SERVICES ====================
+  sequencer-1:
+    build:
+      context: ../services/sequencer
+      dockerfile: Dockerfile
+    container_name: sequencer-1
+    depends_on:
+      - hardhat
+    ports:
+      - "8001:8001"
+    networks:
+      - proof-of-prompt
+    environment:
+      - SEQUENCER_ID=1
+      - PORT=8001
+      - HARDHAT_RPC=http://hardhat:8545
+      - SEQUENCER_PRIVATE_KEY=0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80
+    volumes:
+      - ../smart-contracts/deployed-addresses.json:/app/../smart-contracts/deployed-addresses.json:ro
+      - ../data/anchors:/app/../../data/anchors
+    user: node
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          cpus: '1'
+          memory: 512M
+
+  sequencer-2:
+    build:
+      context: ../services/sequencer
+      dockerfile: Dockerfile
+    container_name: sequencer-2
+    depends_on:
+      - hardhat
+    ports:
+      - "8002:8002"
+    networks:
+      - proof-of-prompt
+    environment:
+      - SEQUENCER_ID=2
+      - PORT=8002
+      - HARDHAT_RPC=http://hardhat:8545
+      - SEQUENCER_PRIVATE_KEY=0x59c6995e998f97a5a0044966f0945389dc9e86dae88c7a8412f4603b6b78690d
+    volumes:
+      - ../smart-contracts/deployed-addresses.json:/app/../smart-contracts/deployed-addresses.json:ro
+      - ../data/anchors:/app/../../data/anchors
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          cpus: '1'
+          memory: 512M
+
+  sequencer-3:
+    build:
+      context: ../services/sequencer
+      dockerfile: Dockerfile
+    container_name: sequencer-3
+    depends_on:
+      - hardhat
+    ports:
+      - "8003:8003"
+    networks:
+      - proof-of-prompt
+    environment:
+      - SEQUENCER_ID=3
+      - PORT=8003
+      - HARDHAT_RPC=http://hardhat:8545
+      - SEQUENCER_PRIVATE_KEY=0x5de4111afa1a4b94908f83103eb1f1706367c2e68ca870fc3fb9a804cdab365a
+    volumes:
+      - ../smart-contracts/deployed-addresses.json:/app/../smart-contracts/deployed-addresses.json:ro
+      - ../data/anchors:/app/../../data/anchors
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          cpus: '1'
+          memory: 512M
+
+  # ==================== MONITORING ====================
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: prometheus
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+      - prometheus-data:/prometheus
+    networks:
+      - proof-of-prompt
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+    restart: unless-stopped
+
+  grafana:
+    image: grafana/grafana:latest
+    container_name: grafana
+    ports:
+      - "3000:3000"
+    volumes:
+      - grafana-data:/var/lib/grafana
+      - ./prometheus/grafana-dashboards:/etc/grafana/provisioning/dashboards
+      - ./prometheus/grafana-dashboards/dashboards.yml:/etc/grafana/provisioning/dashboards/dashboards.yml
+    networks:
+      - proof-of-prompt
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+      - GF_USERS_ALLOW_SIGN_UP=false
+      - GF_PROVISIONING_DASHBOARDS=true
+    restart: unless-stopped

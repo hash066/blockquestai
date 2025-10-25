@@ -1,0 +1,100 @@
+{
+  "id": null,
+  "uid": "blockquest-metrics-dashboard",
+  "title": "BlockQuest Metrics Dashboard",
+  "tags": ["blockquest", "prometheus"],
+  "timezone": "browser",
+  "panels": [
+    {
+      "id": 1,
+      "title": "Commits per Minute",
+      "type": "stat",
+      "targets": [
+        {
+          "expr": "rate(commits_total[1m])",
+          "legendFormat": "Commits/min"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "reqps"
+        }
+      }
+    },
+    {
+      "id": 2,
+      "title": "Anchors Posted per Minute",
+      "type": "stat",
+      "targets": [
+        {
+          "expr": "rate(anchors_posted_total[1m])",
+          "legendFormat": "Anchors/min"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "reqps"
+        }
+      }
+    },
+    {
+      "id": 3,
+      "title": "Batches Created per Minute",
+      "type": "stat",
+      "targets": [
+        {
+          "expr": "rate(batches_created_total[1m])",
+          "legendFormat": "Batches/min"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "reqps"
+        }
+      }
+    },
+    {
+      "id": 4,
+      "title": "IPFS Pin Success Rate",
+      "type": "stat",
+      "targets": [
+        {
+          "expr": "rate(ipfs_pins_success_total[1m]) / rate(ipfs_pins_total[1m]) * 100",
+          "legendFormat": "Success %"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "percent"
+        }
+      }
+    },
+    {
+      "id": 5,
+      "title": "Request Latency",
+      "type": "graph",
+      "targets": [
+        {
+          "expr": "histogram_quantile(0.95, rate(http_request_duration_seconds_bucket[1m]))",
+          "legendFormat": "95th percentile"
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "title": "Active Connections",
+      "type": "graph",
+      "targets": [
+        {
+          "expr": "http_connections_active",
+          "legendFormat": "Active connections"
+        }
+      ]
+    }
+  ],
+  "time": {
+    "from": "now-1h",
+    "to": "now"
+  },
+  "refresh": "30s"
+}

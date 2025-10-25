@@ -1,0 +1,149 @@
+{
+  "id": null,
+  "uid": "custom-blockquest-dashboard",
+  "title": "BlockQuest Custom Dashboard",
+  "tags": [],
+  "style": "dark",
+  "timezone": "browser",
+  "panels": [
+    {
+      "id": 1,
+      "title": "Block Production Rate",
+      "type": "graph",
+      "targets": [
+        {
+          "expr": "rate(tendermint_consensus_height[1m])",
+          "legendFormat": "Blocks/Second"
+        }
+      ],
+      "yAxes": [
+        {
+          "label": "Blocks/Second"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "title": "Transaction Throughput",
+      "type": "graph",
+      "targets": [
+        {
+          "expr": "rate(http_requests_total{endpoint=\"/commit\"}[1m])",
+          "legendFormat": "Commits/Second"
+        }
+      ],
+      "yAxes": [
+        {
+          "label": "Commits/Second"
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "title": "Database Query Performance",
+      "type": "graph",
+      "targets": [
+        {
+          "expr": "rate(pg_stat_database_tup_fetched[1m])",
+          "legendFormat": "DB Reads/Second"
+        }
+      ],
+      "yAxes": [
+        {
+          "label": "Reads/Second"
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "title": "IPFS Pin Success Rate",
+      "type": "graph",
+      "targets": [
+        {
+          "expr": "rate(ipfs_pin_success[1m])",
+          "legendFormat": "Successful Pins"
+        }
+      ],
+      "yAxes": [
+        {
+          "label": "Pins/Second"
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "title": "Sequencer Anchor Rate",
+      "type": "graph",
+      "targets": [
+        {
+          "expr": "rate(anchor_posted_total[1m])",
+          "legendFormat": "Anchors/Minute"
+        }
+      ],
+      "yAxes": [
+        {
+          "label": "Anchors/Minute"
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "title": "CPU Usage",
+      "type": "graph",
+      "targets": [
+        {
+          "expr": "100 - (avg by (instance) (rate(node_cpu_seconds_total{mode=\"idle\"}[1m])) * 100)",
+          "legendFormat": "CPU Usage %"
+        }
+      ],
+      "yAxes": [
+        {
+          "label": "Percentage"
+        }
+      ]
+    },
+    {
+      "id": 7,
+      "title": "Memory Usage",
+      "type": "graph",
+      "targets": [
+        {
+          "expr": "(1 - (node_memory_MemAvailable_bytes / node_memory_MemTotal_bytes)) * 100",
+          "legendFormat": "Memory Usage %"
+        }
+      ],
+      "yAxes": [
+        {
+          "label": "Percentage"
+        }
+      ]
+    },
+    {
+      "id": 8,
+      "title": "Network I/O",
+      "type": "graph",
+      "targets": [
+        {
+          "expr": "rate(node_network_receive_bytes_total[1m])",
+          "legendFormat": "Receive Bytes/Second"
+        },
+        {
+          "expr": "rate(node_network_transmit_bytes_total[1m])",
+          "legendFormat": "Transmit Bytes/Second"
+        }
+      ],
+      "yAxes": [
+        {
+          "label": "Bytes/Second"
+        }
+      ]
+    }
+  ],
+  "time": {
+    "from": "now-1h",
+    "to": "now"
+  },
+  "refresh": "30s",
+  "schemaVersion": 16,
+  "version": 0
+}
